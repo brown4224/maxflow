@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.LinkedList;
 
 class MaxFlow {
-    static final int V = 6; //Number of vertices in graph
+    private int V; //Number of vertices in graph
 
     /* Returns true if there is a path from source 's' to sink
       't' in residual graph. Also fills parent[] to store the
@@ -47,6 +47,7 @@ class MaxFlow {
 
     // Returns tne maximum flow from s to t in the given graph
     int fordFulkerson(int graph[][], int s, int t) {
+        this.V = graph.length;
         int u, v;
 
         // Create a residual graph and fill the residual graph

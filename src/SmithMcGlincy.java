@@ -21,12 +21,14 @@ public class SmithMcGlincy {
     private boolean[] flag;
     private ArrayDeque<Integer> fifo = new ArrayDeque<Integer>();
     private int[] edgeSorted;
+    private int maxCountSortValue;
 
-    public SmithMcGlincy(int[][] g, int s, int t) {
+    public SmithMcGlincy(int[][] g, int s, int t, int maxCountSortValue) {
         this.s = s;
         this.t = t;
         this.G = g;
         this.V = g.length;
+        this.maxCountSortValue = maxCountSortValue;
         R = new int[V][V];
 
 
@@ -149,7 +151,7 @@ public class SmithMcGlincy {
      */
     private int[] countSort(int[] array) {
 
-        int maxValue = 21;
+        int maxValue = this.maxCountSortValue;
         int length = array.length;
         int[] count = new int[maxValue];
         int[] ans = new int[length];
