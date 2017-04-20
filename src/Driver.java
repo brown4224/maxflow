@@ -1,6 +1,3 @@
-import com.sun.org.apache.xpath.internal.SourceTree;
-
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**
@@ -38,7 +35,7 @@ public class Driver {
         s = 0;
         t = 6;
         st.add(new Integer[] {s, t});
-        int g_1[][] =new int[][] {
+        int g_0[][] =new int[][] {
                 {0, 16, 130, 0, 0, 0,30},
                 {0, 0, 0, 120, 0, 0,0},
                 {0, 40, 0, 0, 140, 0,0},
@@ -52,7 +49,7 @@ public class Driver {
         s = 0;
         t = 5;
         st.add(new Integer[] {s, t});
-        int g_2[][] =new int[][] { {0, 16, 13, 0, 0, 0},
+        int g_1[][] =new int[][] { {0, 16, 13, 0, 0, 0},
                 {0, 0, 10, 12, 0, 0},
                 {0, 4, 0, 0, 14, 0},
                 {0, 0, 9, 0, 0, 20},
@@ -64,7 +61,7 @@ public class Driver {
         s = 0;
         t = 5;
         st.add(new Integer[] {s, t});
-        int g_3[][] =new int[][] { {0, 16, 13, 0, 0, 0},
+        int g_2[][] =new int[][] { {0, 16, 13, 0, 0, 0},
                 {0, 0, 10, 12, 0, 0},
                 {0, 4, 0, 0, 14, 0},
                 {0, 0, 9, 0, 0, 20},
@@ -77,7 +74,7 @@ public class Driver {
         s = 0;
         t = 5;
         st.add(new Integer[] {s, t});
-        int g_4[][] =new int[][] { {0, 16, 13, 0, 0, 0},
+        int g_3[][] =new int[][] { {0, 16, 13, 0, 0, 0},
                 {0, 0, 10, 12, 0, 0},
                 {0, 4, 0, 0, 14, 0},
                 {0, 0, 9, 0, 0, 20},
@@ -89,7 +86,7 @@ public class Driver {
         s = 0;
         t = 5;
         st.add(new Integer[] {s, t});
-        int g_5[][] =new int[][] { {0, 16, 13, 0, 0, 0},
+        int g_4[][] =new int[][] { {0, 16, 13, 0, 0, 0},
                 {0, 0, 10, 12, 0, 0},
                 {0, 4, 0, 0, 14, 0},
                 {0, 0, 9, 0, 0, 20},
@@ -100,7 +97,7 @@ public class Driver {
 
         //  Load Graphs
         int g[][][] = new int[][][] {
-                g_1, g_2, g_3, g_4, g_5
+                 g_0, g_1, g_2, g_3, g_4
         };
 
         /*
@@ -118,33 +115,33 @@ public class Driver {
         //  Raw Data
         long[] r_1 = new long[count];
         long[] r_2 = new long[count];
-//        long[] r_3 = new long[count];
+        long[] r_3 = new long[count];
 
         // Time Results
         // Each Graph's Average
         double[] resultFordFulkerson;
         double[] resultSmithMcGlincySorted;
-//        double[] resultSmithMcGlincyUnsorted;
+        double[] resultSmithMcGlincyQuicksort;
 
         // Time Results
         // Average of all data
         // Global Average
         double resultFordFulkersonAVG;
         double resultSmithMcGlincySortedAVG = 0;
-//        double resultSmithMcGlincyUnsortedAVG = 0;
+        double resultSmithMcGlincyQuicksortAVG = 0;
 
         // Results
         // Each Graph's Max Flow
-        int[] ansFordFulkerson = new int[cycles];
-        int[] ansSmithMcGlincySorted = new int[cycles];
-//        int[] ansSmithMcGlincyUnsorted = new int[cycles];
+        int[] ansFordFulkerson = new int[g.length];
+        int[] ansSmithMcGlincySorted = new int[g.length];
+        int[] ansSmithMcGlincyQuicksort = new int[g.length];
 
 
         // Initialize
         // Set arrays to zero
         r_1 = flush(r_1, count);
         r_2 = flush(r_2, count);
-//        r_3 = flush(r_3, count);
+        r_3 = flush(r_3, count);
 
 
         //  Run the graphs
@@ -157,6 +154,7 @@ public class Driver {
 
             start = System.nanoTime();
             MaxFlow n = new MaxFlow();
+
             ansFordFulkerson[id] = n.fordFulkerson(graph, st.get(id)[0], st.get(id)[1]);
             r_1[i] = System.nanoTime() - start;
 
@@ -165,10 +163,10 @@ public class Driver {
             ansSmithMcGlincySorted[id] = m.maxFlow();
             r_2[i] = System.nanoTime() - start;
 
-//            start = System.nanoTime();
-//            SmithMcGlincyUnsorted l = new SmithMcGlincyUnsorted(graph, st.get(id)[0], st.get(id)[1]);
-//            ansSmithMcGlincyUnsorted[id] = l.maxFlow();
-//            r_3[i] = System.nanoTime() - start;
+            start = System.nanoTime();
+            SmithMcGlincyQuickSort l = new SmithMcGlincyQuickSort(graph, st.get(id)[0], st.get(id)[1]);
+            ansSmithMcGlincyQuicksort[id] = l.maxFlow();
+            r_3[i] = System.nanoTime() - start;
         }
 
         //  Make Calculations
@@ -176,8 +174,8 @@ public class Driver {
         resultFordFulkerson = calTimeEACH(r_1, count, g.length);
         resultSmithMcGlincySortedAVG = calTime(r_2, count);
         resultSmithMcGlincySorted = calTimeEACH(r_2, count, g.length);
-//        resultSmithMcGlincyUnsortedAVG = calTime(r_3, count);
-//        resultSmithMcGlincyUnsorted = calTimeEACH(r_3, count, g.length);
+        resultSmithMcGlincyQuicksortAVG = calTime(r_3, count);
+        resultSmithMcGlincyQuicksort = calTimeEACH(r_3, count, g.length);
 
 
         /*
@@ -217,21 +215,21 @@ public class Driver {
 
         /*
         //////////////////////////////////////////////////////////////////////
-        ////////////////////     UN-Sorted    ///////////////////////////////
+        ////////////////////     Quick-Sorted    ///////////////////////////////
         /////////////////////////////////////////////////////////////////////
          */
 
-//        System.out.println("Smith McGlincy Unsorted: "+ " Time AVG: " + resultSmithMcGlincyUnsortedAVG);
-//        System.out.print("Calculated MaxFlow ");
-//        for(int j = 0; j< resultFordFulkerson.length; j++){
-//            System.out.print("Graph " + j + " Results: " + ansSmithMcGlincyUnsorted[j % count] + "\t");
-//        }
-//        System.out.println("\n");
-//        System.out.print("Each Graph's AVG Time: ");
-//        for(int j = 0; j< resultSmithMcGlincyUnsorted.length; j++){
-//            System.out.print("Graph " + j + ": " + resultSmithMcGlincyUnsorted[j] + "\t");
-//        }
-//        System.out.println("\n");
+        System.out.println("Smith McGlincy Quicksort: "+ " Time AVG: " + resultSmithMcGlincyQuicksortAVG);
+        System.out.print("Calculated MaxFlow ");
+        for(int j = 0; j< resultFordFulkerson.length; j++){
+            System.out.print("Graph " + j + " Results: " + ansSmithMcGlincyQuicksort[j % count] + "\t");
+        }
+        System.out.println("\n");
+        System.out.print("Each Graph's AVG Time: ");
+        for(int j = 0; j< resultSmithMcGlincyQuicksort.length; j++){
+            System.out.print("Graph " + j + ": " + resultSmithMcGlincyQuicksort[j] + "\t");
+        }
+        System.out.println("\n");
 
         /*
         //////////////////////////////////////////////////////////////////////
@@ -239,14 +237,12 @@ public class Driver {
         /////////////////////////////////////////////////////////////////////
          */
         String fast = "";
-        if(resultFordFulkersonAVG < resultSmithMcGlincySortedAVG )
+        if(resultFordFulkersonAVG < resultSmithMcGlincySortedAVG && resultFordFulkersonAVG < resultSmithMcGlincyQuicksortAVG)
             fast = "Fort Fulderson";
-        else
+        else if(resultSmithMcGlincySortedAVG < resultFordFulkersonAVG && resultSmithMcGlincySortedAVG <resultSmithMcGlincyQuicksortAVG)
             fast = "Smith McGlincy Sorted";
-
-
-
-//            fast = "Smith McGlincy Unsorted";
+        else
+            fast = "Smith McGlincy Quicksort";
 
         System.out.println("The fastest algorithm is: " + fast);
 
