@@ -19,6 +19,8 @@ public class SmithMcGlincy {
 
     private boolean[] visited;
     private boolean[] flag;
+    private boolean[] cycle;
+
     private ArrayDeque<Integer> fifo = new ArrayDeque<Integer>();
     private int[] edgeSorted;
     private int maxCountSortValue;
@@ -38,6 +40,8 @@ public class SmithMcGlincy {
         visited = new boolean[V];
         edgeSorted = new int[V];
         flag = new boolean[V];
+        cycle = new boolean[V];
+
 
     }
 
@@ -47,61 +51,127 @@ public class SmithMcGlincy {
         visited[t] = true;
         while (!fifo.isEmpty()) {
             int current = fifo.pop();
-            if(current != s){
-//                System.out.println();
-//                System.out.println("Processing Node: " + current);
-//                System.out.print("Requires");
-//                for (int j=0; j< requires.length; j++){
-//                    System.out.print(requires[j] + " ");
-//                }
-//                System.out.println();
+            if (current != s) {
+                System.out.println();
+                System.out.println("Processing Node: " + current);
+                System.out.print("Requires");
+                for (int j = 0; j < requires.length; j++) {
+                    System.out.print(requires[j] + " ");
+                }
+                System.out.println();
+                System.out.print("Cost: ");
+                for (int j = 0; j < cost.length; j++) {
+                    System.out.print(cost[j] + " ");
+                }
+                System.out.println();
 
                 // Sort the edges
                 edgeSorted = countSort(R[current]);
+                ArrayDeque<Integer> edgeQueue = new ArrayDeque<Integer>();
+                int first = -1;
+//                boolean reprocess = false;
+
 
                 // Go through each edge
                 // Start at end of array and go forward until zero
-                for (int i = V -1 ; i >=0; i--) {
-                    int edge = edgeSorted[i];
+                for (int i = V - 1; i >= 0; i--) {
 
-                    if (R[current][edge]  == 0) {
-                        break;  // no more edges
+                    // Add all edges with value to queue
+                    if (R[current][edgeSorted[i]] > 0) {
+
+                        // If connected to s.  Use that first
+                        if (edgeSorted[i] == s)
+                            first = edgeSorted[i];
+
+                            // If next node is one away from s
+                        else if (G[s][edgeSorted[i]] > 0) {
+
+                            // If not in a loop add edge back
+                            if (!cycle[edgeSorted[i]]) {
+                                edgeQueue.addFirst(edgeSorted[i]);
+
+                                // Mark a loop
+//                                if(visited[edgeSorted[i]]){
+//                                if(flag[edgeSorted[i]]){
+//
+//                                    flag[edgeSorted[i]] = false;
+//                                    visited[edgeSorted[i]] = false;
+//                                    cycle[edgeSorted[i]] = true;
+//                                }
+                            }
+
+
+                        }
+                        // Other wise add edge to back
+                        else
+                            edgeQueue.addLast(edgeSorted[i]);
+
+//                    if (R[current][edge]  == 0) {
+//                        break;  // no more edges
+//                        if (flag[edgeSorted[i]]) {
+//
+//                            flag[edgeSorted[i]] = false;
+//                            visited[edgeSorted[i]] = false;
+//                            cycle[edgeSorted[i]] = true;
+//                        }
                     }
 
+                }
+                // Put S First
+                if (first > -1)
+                    edgeQueue.addFirst(first);
 
-                    if (R[current][edge] > 0 && edge != current && !flag[edge]) {
+
+                while (!edgeQueue.isEmpty()) {
+
+                    int edge = edgeQueue.pop();
+                    System.out.println("Edge: " + edge);
+
+
+//                    if (R[current][edge] > 0 && edge != current && !flag[edge]) {
+                    if (edge != current) {
+
                         //process edge
                         int adjCost = cost[edge] - requires[edge];   //Cost of edge - require edge.  Most times requires will be 0
                         int value = Math.min(adjCost, requires[current]);
                         value = Math.min(value, R[current][edge]);
-//                        System.out.println("Current: " + current + " Edge: " + edge + " cost: " + cost[edge]);
-//                        System.out.println("Current: " + current + " Edge: " + edge + " requires: " + requires[current]);
-//                        System.out.println("Current: " + current + " Edge: " + edge + " R: " + R[current][edge]);
-//                        System.out.println("Choose: " + value);
-//                        System.out.println();
-                        requires[current] -= value;
-                        requires[edge] += value;
+                        System.out.println("Current: " + current + " Edge: " + edge + " cost: " + cost[edge] + " Adj Cost: " + adjCost);
+                        System.out.println("Current: " + current + " Edge: " + edge + " requires: " + requires[current]);
+                        System.out.println("Current: " + current + " Edge: " + edge + " R: " + R[current][edge]);
+                        System.out.println("Choose: " + value);
+                        System.out.println();
 
-                        //If node has been depleted remove backward edges
-                        if(requires[current] == 0)
-                            flag[current] = true;
 
-                        // TODO: 4/4/17 update if requires hits zero
-
-                        // Add to queue if not visited
-                        if (visited[edge] == false){
+                        if (value > 0){
                             fifo.addLast(edge);
-                            visited[edge] =true;
+                            requires[current] -= value;
+                            requires[edge] += value;
+                            R[current][edge] -= value;
+
                         }
 
 
+//                        //If node has been depleted remove backward edges
+//                        if (requires[current] == 0) {
+//                            flag[current] = true;
+////                            break;
+//                        }
+//
+//                        // TODO: 4/4/17 update if requires hits zero
+//
+//                        // Add to queue if not visited
+//                        if (!visited[edge] && value > 0) {
+//                            fifo.addLast(edge);
+//                            visited[edge] = true;
+//                        }
 
                     }
+
                 }
             }
-
-
         }
+
+
         return requires[s];
     }
 
@@ -113,13 +183,19 @@ public class SmithMcGlincy {
             requires[i] = 0;
             visited[i] = false;
             flag[i] = false;
+            cycle[i] = false;
             for (int j = 0; j < V; j++) {
                 total += G[i][j];
                 R[j][i] = G[i][j];
             }
             cost[i] = total;
-//            System.out.println();
+            System.out.println();
         }
+        System.out.println("Cost: ");
+        for (int i = 0; i < V; i++) {
+            System.out.print(cost[i] + ", ");
+        }
+        System.out.println("\n");
 
 
         // Scan the outgoing edges
@@ -128,25 +204,31 @@ public class SmithMcGlincy {
             // TODO: 4/4/17 make "total" generics
             int total = 0;
             for (int j = 0; j < V; j++) {
-//                System.out.print(R[i][j] + " ");
+                System.out.print(R[i][j] + " ");
                 total += R[i][j];
             }
             cost[i] = Math.min(total, cost[i]);
-            if(i == t){
+            if (i == t) {
                 requires[t] = total;
-//                System.out.println();
-//                System.out.println("T Required: " + requires[t]);
+                System.out.println();
+                System.out.println("T Required: " + requires[t]);
             }
-//            System.out.println();
+            System.out.println();
         }
-//        System.out.println();
-//        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        System.out.println("Cost 2: ");
+        for (int i = 0; i < V; i++) {
+            System.out.print(cost[i] + ", ");
+        }
+
     }
 
     /**
-     *
      * @param array
-     * @return  A sorted array based on the index values.  Does not return sorted array
+     * @return A sorted array based on the index values.  Does not return sorted array
      * Think POINTERS
      */
     private int[] countSort(int[] array) {
