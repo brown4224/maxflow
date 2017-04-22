@@ -1,4 +1,7 @@
+import sun.nio.cs.ArrayDecoder;
+
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 
 public class SmithMcGlincyQuickSort {
@@ -13,15 +16,11 @@ public class SmithMcGlincyQuickSort {
     private int[] cost;
     private int[] requires;
 
-
-    private boolean[] visited;
-    private boolean[] flag;
     private ArrayDeque<Integer> fifo = new ArrayDeque<Integer>();
-    private int[] edgeSorted;
+    private Tuple<Integer, Integer>[] edgeSorted;
     private int maxCountSortValue;
 
-
-    public SmithMcGlincyQuickSort (int[][] g, int s, int t) {
+    public SmithMcGlincyQuickSort(int[][] g, int s, int t) {
         this.s = s;
         this.t = t;
         this.G = g;
@@ -30,85 +29,104 @@ public class SmithMcGlincyQuickSort {
         R = new Tuple[V][V];
 
 
-
         // TODO: 4/4/17 make generic
         cost = new int[V];
         requires = new int[V];
-        visited = new boolean[V];
-        edgeSorted = new int[V];
-        flag = new boolean[V];
+        edgeSorted = new Tuple[V];
+
 
     }
 
     public int maxFlow() {
         init();
         fifo.addFirst(t);
-        visited[t] = true;
         while (!fifo.isEmpty()) {
             int current = fifo.pop();
-            if(current != s){
+            if (current != s) {
 //                System.out.println();
 //                System.out.println("Processing Node: " + current);
 //                System.out.print("Requires");
-//                for (int j=0; j< requires.length; j++){
+//                for (int j = 0; j < requires.length; j++) {
 //                    System.out.print(requires[j] + " ");
+//                }
+//                System.out.println();
+//                System.out.print("Cost: ");
+//                for (int j = 0; j < cost.length; j++) {
+//                    System.out.print(cost[j] + " ");
 //                }
 //                System.out.println();
 
                 // Sort the edges
-                quickSort(R[current], 0, V- 1);
-
-//                System.out.println("Quicksort array");
-//                for(int i= 0; i< V; i++){
-//                    System.out.println("Capacity " + R[current][i].getCapacity() + " Edge: " + R[current][i].getEdge());
-//                }
-//                System.out.println();
+                quickSort(R[current], 0, V-1);
+                ArrayDeque<Tuple> edgeQueue = new ArrayDeque<Tuple>();
+                boolean first = false;
+                Tuple<Integer, Integer> f = new Tuple<>(0,0);
 
 
                 // Go through each edge
                 // Start at end of array and go forward until zero
-                for (int i = V -1 ; i >=0; i--) {
-                    int edge = R[current][i].getEdge();
+                for (int i = V - 1; i >= 0; i--) {
+
+                    // Add all edges with value to queue
+                    if (R[current][i].getCapacity() > 0) {
+
+                        // If connected to s.  Use that first
+                        if (R[current][i].getEdge() == s) {
+
+                            first = true;
+                            f = R[current][i];
+
+
+
+
+                            // If next node is one away from s
+                        }else if (G[s][R[current][i].getEdge()] > 0) {
+                            edgeQueue.addFirst(R[current][i]);
+
+                        }
+                        // Other wise add edge to back
+                        else
+                            edgeQueue.addLast(R[current][i]);
+                    }
+
+                }
+                // Put S First
+                if (first)
+                    edgeQueue.addFirst(f);
+
+
+                while (!edgeQueue.isEmpty()) {
+
+                    Tuple<Integer, Integer> edge = edgeQueue.pop();
 //                    System.out.println("Edge: " + edge);
 
-                    if (R[current][i].getCapacity()  == 0) {
-                        break;  // no more edges
-                    }
 
+                    if (edge.getEdge() != current) {
 
-                    if (edge != current && !flag[edge]) {
                         //process edge
-                        int adjCost = cost[edge] - requires[edge];   //Cost of edge - require edge.  Most times requires will be 0
+                        int adjCost = cost[edge.getEdge()] - requires[edge.getEdge()];   //Cost of edge - require edge.  Most times requires will be 0
                         int value = Math.min(adjCost, requires[current]);
-                        value = Math.min(value, R[current][i].getCapacity());
-//                        System.out.println("Current: " + current + " Edge: " + edge + " cost: " + cost[edge]);
+                        value = Math.min(value, edge.getCapacity());
+//                        System.out.println("Current: " + current + " Edge: " + edge + " cost: " + cost[edge] + " Adj Cost: " + adjCost);
 //                        System.out.println("Current: " + current + " Edge: " + edge + " requires: " + requires[current]);
-//                        System.out.println("Current: " + current + " Edge: " + edge + " R: " + R[current][i].getCapacity());
+//                        System.out.println("Current: " + current + " Edge: " + edge + " R: " + R[current][edge]);
 //                        System.out.println("Choose: " + value);
 //                        System.out.println();
-                        requires[current] -= value;
-                        requires[edge] += value;
 
-                        //If node has been depleted remove backward edges
-                        if(requires[current] == 0)
-                            flag[current] = true;
-
-                        // TODO: 4/4/17 update if requires hits zero
-
-                        // Add to queue if not visited
-                        if (visited[edge] == false){
-                            fifo.addLast(edge);
-                            visited[edge] =true;
+                        if (value > 0){
+                            fifo.addLast(edge.getEdge());
+                            requires[current] -= value;
+                            requires[edge.getEdge()] += value;
+                            edge.setCapacity(edge.getCapacity() - value);
                         }
 
-
-
                     }
+
                 }
             }
-
-
         }
+
+
         return requires[s];
     }
 
@@ -118,8 +136,6 @@ public class SmithMcGlincyQuickSort {
             //// TODO: 4/4/17 make generic
             int total = 0;
             requires[i] = 0;
-            visited[i] = false;
-            flag[i] = false;
             for (int j = 0; j < V; j++) {
                 total += G[i][j];
                 R[j][i] = new Tuple<>(G[i][j], i);
@@ -127,6 +143,11 @@ public class SmithMcGlincyQuickSort {
             cost[i] = total;
 //            System.out.println();
         }
+//        System.out.println("Cost: ");
+//        for (int i = 0; i < V; i++) {
+//            System.out.print(cost[i] + ", ");
+//        }
+//        System.out.println("\n");
 
 
         // Scan the outgoing edges
@@ -148,9 +169,20 @@ public class SmithMcGlincyQuickSort {
         }
 //        System.out.println();
 //        System.out.println();
+//        System.out.println();
+//
+//        System.out.println("Cost 2: ");
+//        for (int i = 0; i < V; i++) {
+//            System.out.print(cost[i] + ", ");
+//        }
+
     }
 
-
+    /**
+     * @param array
+     * @return A sorted array based on the index values.  Does not return sorted array
+     * Think POINTERS
+     */
     private void quickSort(Tuple<Integer, Integer>[] array, int low, int high) {
         if(low < high){
             int p = partition(array, low, high);
@@ -175,40 +207,5 @@ public class SmithMcGlincyQuickSort {
         array[high] = temp;
         return i++;
     }
-
-//    /**
-//     *
-//     * @param array
-//     * @return  A sorted array based on the index values.  Does not return sorted array
-//     * Think POINTERS
-//     */
-//    private int[] countSort(int[] array) {
-//
-//        int maxValue = this.maxCountSortValue;
-//        int length = array.length;
-//        int[] count = new int[maxValue];
-//        int[] ans = new int[length];
-//        for (int i = 0; i < maxValue; i++) {
-//            count[i] = 0;
-//        }
-//        for (int i = 0; i < length; i++) {
-//            ++count[array[i]];
-//        }
-//        for (int i = 1; i < maxValue; i++) {
-//            count[i] += count[i - 1];
-//        }
-//        for (int i = 0; i < length; i++) {
-//            ans[count[array[i]] - 1] = i;
-//            --count[array[i]];
-//        }
-//
-////        System.out.print("Sorted Index: ");
-////        for (int i = 0; i< length; i++){
-////            System.out.print(ans[i] + " ");
-////        }
-////        System.out.println();
-//
-//        return ans;
-//    }
 
 }

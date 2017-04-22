@@ -17,4 +17,11 @@ public class Tuple<C, E> {
         return edge;
     }
 
+    public void setEdge(E edge) {
+        this.edge = edge;
+    }
+
+    public void setCapacity(C capacity) {
+        this.capacity = capacity;
+    }
 }

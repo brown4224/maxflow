@@ -1,4 +1,7 @@
+import sun.nio.cs.ArrayDecoder;
+
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 
 public class SmithMcGlincyUnsorted {
@@ -13,120 +16,112 @@ public class SmithMcGlincyUnsorted {
     private int[] cost;
     private int[] requires;
 
-
-    private boolean[] visited;
-    private boolean[] flag;
     private ArrayDeque<Integer> fifo = new ArrayDeque<Integer>();
     private int[] edgeSorted;
-
-    // Save State
-    private int [] saveState;
-    private boolean next;
+    private int maxCountSortValue;
 
     public SmithMcGlincyUnsorted(int[][] g, int s, int t) {
         this.s = s;
         this.t = t;
         this.G = g;
         this.V = g.length;
+        this.maxCountSortValue = maxCountSortValue;
         R = new int[V][V];
 
 
         // TODO: 4/4/17 make generic
         cost = new int[V];
         requires = new int[V];
-        visited = new boolean[V];
         edgeSorted = new int[V];
-        flag = new boolean[V];
-        saveState = new int[V];
-        next = false;
+
 
     }
 
     public int maxFlow() {
         init();
         fifo.addFirst(t);
-        visited[t] = true;
         while (!fifo.isEmpty()) {
             int current = fifo.pop();
-            next = false;
-            if(current != s){
-                System.out.println();
-                System.out.println("Processing Node: " + current);
-                System.out.print("Requires");
-                for (int j=0; j< requires.length; j++){
-                    System.out.print(requires[j] + " ");
-                }
-                System.out.println();
+            if (current != s) {
+//                System.out.println();
+//                System.out.println("Processing Node: " + current);
+//                System.out.print("Requires");
+//                for (int j = 0; j < requires.length; j++) {
+//                    System.out.print(requires[j] + " ");
+//                }
+//                System.out.println();
+//                System.out.print("Cost: ");
+//                for (int j = 0; j < cost.length; j++) {
+//                    System.out.print(cost[j] + " ");
+//                }
+//                System.out.println();
+
+                // Sort the edges
+//                edgeSorted = countSort(R[current]);
+                ArrayDeque<Integer> edgeQueue = new ArrayDeque<Integer>();
+                int first = -1;
 
 
                 // Go through each edge
-                for (int edge = 0; edge < V && !next; edge++) {
+                // Start at end of array and go forward until zero
+                for (int i = V - 1; i >= 0; i--) {
 
-                    // Chick if edge is being re-processed
-                    if(saveState[current] > -1 && flag[current]){
-                        // Load Node for re-processing
-                        System.out.println("Re-Processing: " + current);
-                        edge = saveState[current];
-                        edge++;
+                    // Add all edges with value to queue
+                    if (R[current][i] > 0) {
 
-                        // Update Markers
-                        flag[current] = false;
-                        saveState[current] = -1;
+                        // If connected to s.  Use that first
+                        if (R[current][i] == s)
+                            first = R[current][i];
+
+                            // If next node is one away from s
+                        else if (G[s][i] > 0) {
+                            edgeQueue.addFirst(R[current][i]);
+
+                        }
+                        // Other wise add edge to back
+                        else
+                            edgeQueue.addLast(edgeSorted[i]);
                     }
 
+                }
+                // Put S First
+                if (first > -1)
+                    edgeQueue.addFirst(first);
 
-                    if (R[current][edge] > 0 && edge != current ) {
 
+                while (!edgeQueue.isEmpty()) {
+
+                    int edge = edgeQueue.pop();
+//                    System.out.println("Edge: " + edge);
+
+
+                    if (edge != current) {
 
                         //process edge
                         int adjCost = cost[edge] - requires[edge];   //Cost of edge - require edge.  Most times requires will be 0
                         int value = Math.min(adjCost, requires[current]);
                         value = Math.min(value, R[current][edge]);
+//                        System.out.println("Current: " + current + " Edge: " + edge + " cost: " + cost[edge] + " Adj Cost: " + adjCost);
+//                        System.out.println("Current: " + current + " Edge: " + edge + " requires: " + requires[current]);
+//                        System.out.println("Current: " + current + " Edge: " + edge + " R: " + R[current][edge]);
+//                        System.out.println("Choose: " + value);
+//                        System.out.println();
 
-
-                            System.out.println("Current: " + current + " Edge: " + edge + " cost: " + cost[edge]);
-                            System.out.println("Current: " + current + " Edge: " + edge + " requires: " + requires[current]);
-                            System.out.println("Current: " + current + " Edge: " + edge + " R: " + R[current][edge]);
-                            System.out.println("Choose: " + value);
-                            System.out.println();
+                        if (value > 0){
+                            fifo.addLast(edge);
                             requires[current] -= value;
                             requires[edge] += value;
+                            R[current][edge] -= value;
 
-
-                            //If node has been depleted remove backward edges
-                            if (requires[current] <= 0) {
-                                flag[current] = true;
-                                saveState[current] = edge;
-                                next = true;
-
-                                System.out.println("Saving:  " + saveState[current] + " Edge: " + edge);
-
-                                // Check if Edge Needs to be re-processed
-                                if(flag[edge] && fifo.size() > 1){
-                                    System.out.println("Triggered!!!!!!!!!!!!!!");
-                                    System.out.println("Saving State: " + edge);
-                                    fifo.addLast(edge);
-                                }
-                            }
-
-                            // TODO: 4/4/17 update if requires hits zero
-
-                            // Add to queue if not visited
-                            if (visited[edge] == false) {
-                                fifo.addLast(edge);
-                                visited[edge] = true;
-                            } else if (flag[edge] && !flag[current]) {
-
-                            }
-
-
+                        }
 
                     }
+
                 }
             }
-
-
         }
+
+
         return requires[s];
     }
 
@@ -136,16 +131,18 @@ public class SmithMcGlincyUnsorted {
             //// TODO: 4/4/17 make generic
             int total = 0;
             requires[i] = 0;
-            visited[i] = false;
-            flag[i] = false;
-            saveState[i]= -1;
             for (int j = 0; j < V; j++) {
                 total += G[i][j];
                 R[j][i] = G[i][j];
             }
             cost[i] = total;
-            System.out.println();
+//            System.out.println();
         }
+//        System.out.println("Cost: ");
+//        for (int i = 0; i < V; i++) {
+//            System.out.print(cost[i] + ", ");
+//        }
+//        System.out.println("\n");
 
 
         // Scan the outgoing edges
@@ -154,20 +151,28 @@ public class SmithMcGlincyUnsorted {
             // TODO: 4/4/17 make "total" generics
             int total = 0;
             for (int j = 0; j < V; j++) {
-                System.out.print(R[i][j] + " ");
+//                System.out.print(R[i][j] + " ");
                 total += R[i][j];
             }
             cost[i] = Math.min(total, cost[i]);
-            if(i == t){
+            if (i == t) {
                 requires[t] = total;
-                System.out.println();
-                System.out.println("T Required: " + requires[t]);
+//                System.out.println();
+//                System.out.println("T Required: " + requires[t]);
             }
-            System.out.println();
+//            System.out.println();
         }
-        System.out.println();
-        System.out.println();
+//        System.out.println();
+//        System.out.println();
+//        System.out.println();
+//
+//        System.out.println("Cost 2: ");
+//        for (int i = 0; i < V; i++) {
+//            System.out.print(cost[i] + ", ");
+//        }
+
     }
+
 
 
 }
