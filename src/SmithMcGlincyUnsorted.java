@@ -57,7 +57,6 @@ public class SmithMcGlincyUnsorted {
 //                System.out.println();
 
                 // Sort the edges
-//                edgeSorted = countSort(R[current]);
                 ArrayDeque<Integer> edgeQueue = new ArrayDeque<Integer>();
                 int first = -1;
 
@@ -70,17 +69,17 @@ public class SmithMcGlincyUnsorted {
                     if (R[current][i] > 0) {
 
                         // If connected to s.  Use that first
-                        if (R[current][i] == s)
-                            first = R[current][i];
+                        if (i == s)
+                            first = i;
 
                             // If next node is one away from s
                         else if (G[s][i] > 0) {
-                            edgeQueue.addFirst(R[current][i]);
+                            edgeQueue.addFirst(i);
 
                         }
                         // Other wise add edge to back
                         else
-                            edgeQueue.addLast(edgeSorted[i]);
+                            edgeQueue.addLast(i);
                     }
 
                 }
