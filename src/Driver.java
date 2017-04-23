@@ -25,7 +25,7 @@ public class Driver {
 
 
         // Values
-        int cycles = 5;   // Set your number of cycles
+        int cycles = 1;   // Set your number of cycles
         final int countSortValue = 250;  // Count sort's max number.   Recommend switching to a Heap or quicksort
 
 
@@ -186,7 +186,6 @@ public class Driver {
         //  Load Graphs
         int g[][][] = new int[][][] {
                  g_0, g_1, g_2, g_3, g_4, g_5, g_6, g_7
-//                g_0
         };
 
         /*
@@ -232,13 +231,6 @@ public class Driver {
         int[] ansSmithMcGlincyUnsorted = new int[g.length];
 
 
-        // Initialize
-        // Set arrays to zero
-        r_1 = flush(r_1, count);
-        r_2 = flush(r_2, count);
-        r_3 = flush(r_3, count);
-        r_4 = flush(r_3, count);
-
 
         //  Run the graphs
         for(int i=0; i< count; i++) {
@@ -247,27 +239,31 @@ public class Driver {
             int id = i% g.length; // Graph ID
             int[][] graph = g[id];
 
-            start = System.nanoTime();
+            long start_1 = System.nanoTime();
             MaxFlow n = new MaxFlow();
-
             ansFordFulkerson[id] = n.fordFulkerson(graph, st.get(id)[0], st.get(id)[1]);
-            r_1[i] = System.nanoTime() - start;
+            r_1[i] = System.nanoTime() - start_1;
 
-            start = System.nanoTime();
+            long start_2 = System.nanoTime();
             SmithMcGlincy m = new SmithMcGlincy(graph, st.get(id)[0], st.get(id)[1], countSortValue);
             ansSmithMcGlincySorted[id] = m.maxFlow();
-            r_2[i] = System.nanoTime() - start;
+            r_2[i] = System.nanoTime() - start_2;
 
-            start = System.nanoTime();
+            long start_3 = System.nanoTime();
             SmithMcGlincyQuickSort l = new SmithMcGlincyQuickSort(graph, st.get(id)[0], st.get(id)[1]);
             ansSmithMcGlincyQuicksort[id] = l.maxFlow();
-            r_3[i] = System.nanoTime() - start;
+            r_3[i] = (System.nanoTime() - start_3);
+            if(id == 1)
+                System.out.println(r_3[i]);
 
-            start = System.nanoTime();
+            long start_4 = System.nanoTime();
             SmithMcGlincyUnsorted u = new SmithMcGlincyUnsorted(graph, st.get(id)[0], st.get(id)[1]);
             ansSmithMcGlincyUnsorted[id] = u.maxFlow();
-            r_4[i] = System.nanoTime() - start;
+            r_4[i] = System.nanoTime() - start_4;
+
         }
+
+
 
         //  Make Calculations
         resultFordFulkersonAVG = calTime(r_1, count);
@@ -278,6 +274,8 @@ public class Driver {
         resultSmithMcGlincyQuicksort = calTimeEACH(r_3, count, g.length);
         resultSmithMcGlincyUnsortedAVG= calTime(r_4, count);
         resultSmithMcGlincyUnsorted = calTimeEACH(r_4, count, g.length);
+
+        System.out.println("Avg = " + resultSmithMcGlincyQuicksort[0]);
 
 
         /*
@@ -327,7 +325,7 @@ public class Driver {
         for(int j = 0; j< resultFordFulkerson.length; j++){
             System.out.print("Graph " + j + " Results: " + ansSmithMcGlincyQuicksort[j % count] + "\t");
         }
-        System.out.println("\n");
+        System.out.println("");
         System.out.print("Each Graph's AVG Time: ");
         for(int j = 0; j< resultSmithMcGlincyQuicksort.length; j++){
             System.out.print("Graph " + j + ": " + resultSmithMcGlincyQuicksort[j] + "\t");
@@ -346,7 +344,7 @@ public class Driver {
         for(int j = 0; j< resultFordFulkerson.length; j++){
             System.out.print("Graph " + j + " Results: " + ansSmithMcGlincyUnsorted[j % count] + "\t");
         }
-        System.out.println("\n");
+        System.out.println("");
         System.out.print("Each Graph's AVG Time: ");
         for(int j = 0; j< resultSmithMcGlincyUnsorted.length; j++){
             System.out.print("Graph " + j + ": " + resultSmithMcGlincyUnsorted[j] + "\t");
@@ -388,13 +386,22 @@ public class Driver {
         return total /( (double) count);
     }
     private static double[] calTimeEACH(long[] result, int count, int graphLength){
+
+//        System.out.println("Cal AVG");
         double [] ans = new double[graphLength];
         for (int j = 0; j < graphLength; j++){
             long total = 0;
             for (int i= j; i< count; i += graphLength){
+                if(j == 1)
+                    System.out.print(result[i] + ", ");
                 total += result[i];
             }
-            ans[j] = total /( (double) count / graphLength);
+            if(j == 1)
+                j=1;
+
+
+                ans[j] = total /( (double) count / graphLength);
+
         }
         return ans;
     }
