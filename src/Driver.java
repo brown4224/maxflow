@@ -25,7 +25,7 @@ public class Driver {
 
 
         // Values
-        int cycles = 1;   // Set your number of cycles
+        int cycles = 5;   // Set your number of cycles
         final int countSortValue = 250;  // Count sort's max number.   Recommend switching to a Heap or quicksort
 
 
@@ -253,14 +253,12 @@ public class Driver {
             SmithMcGlincyQuickSort l = new SmithMcGlincyQuickSort(graph, st.get(id)[0], st.get(id)[1]);
             ansSmithMcGlincyQuicksort[id] = l.maxFlow();
             r_3[i] = (System.nanoTime() - start_3);
-            if(id == 1)
-                System.out.println(r_3[i]);
+
 
             long start_4 = System.nanoTime();
             SmithMcGlincyUnsorted u = new SmithMcGlincyUnsorted(graph, st.get(id)[0], st.get(id)[1]);
             ansSmithMcGlincyUnsorted[id] = u.maxFlow();
             r_4[i] = System.nanoTime() - start_4;
-
         }
 
 
@@ -274,8 +272,6 @@ public class Driver {
         resultSmithMcGlincyQuicksort = calTimeEACH(r_3, count, g.length);
         resultSmithMcGlincyUnsortedAVG= calTime(r_4, count);
         resultSmithMcGlincyUnsorted = calTimeEACH(r_4, count, g.length);
-
-        System.out.println("Avg = " + resultSmithMcGlincyQuicksort[0]);
 
 
         /*
@@ -291,7 +287,8 @@ public class Driver {
         System.out.println("");
         System.out.print("Each Graph's AVG Time: ");
         for(int j = 0; j< resultFordFulkerson.length; j++){
-            System.out.print("Graph " + j + ": " + resultFordFulkerson[j] + "\t");
+            System.out.print(resultFordFulkerson[j] + "\t");
+//            System.out.print("Graph " + j + ": " + resultFordFulkerson[j] + "\t");
         }
         System.out.println("\n");
 
@@ -308,7 +305,9 @@ public class Driver {
         System.out.println("");
         System.out.print("Each Graph's AVG Time: ");
         for(int j = 0; j< resultSmithMcGlincySorted.length; j++){
-            System.out.print("Graph " + j + ": " + resultSmithMcGlincySorted[j] + "\t");
+            System.out.print(resultSmithMcGlincySorted[j] + "\t");
+
+//            System.out.print("Graph " + j + ": " + resultSmithMcGlincySorted[j] + "\t");
         }
         System.out.println("\n");
 
@@ -328,7 +327,9 @@ public class Driver {
         System.out.println("");
         System.out.print("Each Graph's AVG Time: ");
         for(int j = 0; j< resultSmithMcGlincyQuicksort.length; j++){
-            System.out.print("Graph " + j + ": " + resultSmithMcGlincyQuicksort[j] + "\t");
+            System.out.print(resultSmithMcGlincyQuicksort[j] + "\t");
+
+//            System.out.print("Graph " + j + ": " + resultSmithMcGlincyQuicksort[j] + "\t");
         }
         System.out.println("\n");
 
@@ -347,7 +348,9 @@ public class Driver {
         System.out.println("");
         System.out.print("Each Graph's AVG Time: ");
         for(int j = 0; j< resultSmithMcGlincyUnsorted.length; j++){
-            System.out.print("Graph " + j + ": " + resultSmithMcGlincyUnsorted[j] + "\t");
+            System.out.print(resultSmithMcGlincyUnsorted[j] + "\t");
+
+//            System.out.print("Graph " + j + ": " + resultSmithMcGlincyUnsorted[j] + "\t");
         }
         System.out.println("\n");
 
@@ -387,21 +390,15 @@ public class Driver {
     }
     private static double[] calTimeEACH(long[] result, int count, int graphLength){
 
-//        System.out.println("Cal AVG");
         double [] ans = new double[graphLength];
         for (int j = 0; j < graphLength; j++){
             long total = 0;
             for (int i= j; i< count; i += graphLength){
-                if(j == 1)
-                    System.out.print(result[i] + ", ");
                 total += result[i];
             }
             if(j == 1)
                 j=1;
-
-
                 ans[j] = total /( (double) count / graphLength);
-
         }
         return ans;
     }

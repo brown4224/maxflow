@@ -1,0 +1,92 @@
+Run1
+######################################################################################
+Ford Fulkerson:  Time AVG: 304911.125
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 1583407.0	56014.0	50083.0	75114.0	87921.0	40291.0	245733.0	300726.0	
+
+Smith McGlincy:  Time AVG: 401409.625
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 1069807.0	163868.0	152572.0	237012.0	188390.0	261718.0	664132.0	473778.0	
+
+Smith McGlincy Quicksort:  Time AVG: 524570.875
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 1669454.0	119817.0	87486.0	172103.0	105624.0	687673.0	997323.0	357087.0	
+
+Smith McGlincy Un-sorted:  Time AVG: 173836.5
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 897159.0	41085.0	30195.0	44749.0	37504.0	58188.0	177200.0	104612.0	
+
+Run2
+######################################################################################
+Ford Fulkerson:  Time AVG: 309788.625
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 1682120.0	52617.0	48947.0	94078.0	80750.0	37514.0	217793.0	264490.0	
+
+Smith McGlincy:  Time AVG: 392021.125
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 1021059.0	156966.0	191585.0	211816.0	183593.0	253048.0	649207.0	468895.0	
+
+Smith McGlincy Quicksort:  Time AVG: 440656.0
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 1628841.0	108259.0	85500.0	122649.0	105273.0	165266.0	997827.0	311633.0	
+
+Smith McGlincy Un-sorted:  Time AVG: 149658.375
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 765051.0	41800.0	41450.0	41394.0	39123.0	46331.0	111995.0	110123.0	
+
+Run3
+######################################################################################
+Ford Fulkerson:  Time AVG: 574354.0
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 2183766.0	75712.0	44722.0	70359.0	224765.0	38940.0	988995.0	967573.0	
+
+Smith McGlincy:  Time AVG: 580176.875
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 1232441.0	154675.0	164182.0	454330.0	804753.0	258341.0	1091666.0	481027.0	
+
+Smith McGlincy Quicksort:  Time AVG: 905832.875
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 2485407.0	673559.0	73112.0	763442.0	130573.0	445934.0	1931167.0	743469.0	
+
+Smith McGlincy Un-sorted:  Time AVG: 153531.75
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 815993.0	46268.0	31787.0	47854.0	31458.0	36214.0	115908.0	102772.0	
+
+
+Run4
+######################################################################################
+Ford Fulkerson:  Time AVG: 334753.375
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 1626749.0	50067.0	45832.0	72060.0	93180.0	34990.0	306180.0	448969.0	
+
+Smith McGlincy:  Time AVG: 380695.25
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 977794.0	155836.0	159783.0	240543.0	186586.0	238193.0	592369.0	494458.0	
+
+Smith McGlincy Quicksort:  Time AVG: 440398.25
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 1524359.0	138598.0	80690.0	134627.0	105401.0	185124.0	1037475.0	316912.0	
+
+Smith McGlincy Un-sorted:  Time AVG: 165685.0
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 765824.0	42407.0	30576.0	43451.0	37932.0	108610.0	191055.0	105625.0	
+
+
+Run5
+######################################################################################
+Ford Fulkerson:  Time AVG: 321603.25
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 1584165.0	53325.0	66969.0	230202.0	88525.0	38374.0	239920.0	271346.0	
+
+Smith McGlincy:  Time AVG: 406790.25
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 1036403.0	179742.0	189637.0	252278.0	167218.0	265509.0	681569.0	481966.0	
+
+Smith McGlincy Quicksort:  Time AVG: 541041.0
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 2248587.0	144200.0	86533.0	126062.0	105850.0	145579.0	1135788.0	335729.0	
+
+Smith McGlincy Un-sorted:  Time AVG: 162566.0
+Calculated MaxFlow Graph 0 Results: 23	Graph 1 Results: 23	Graph 2 Results: 35	Graph 3 Results: 100	Graph 4 Results: 25	Graph 5 Results: 11	Graph 6 Results: 41	Graph 7 Results: 60	
+Each Graph's AVG Time: 754873.0	44292.0	33408.0	44168.0	41628.0	74842.0	192725.0	114592.0	
+

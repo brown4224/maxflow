@@ -1,8 +1,4 @@
-import sun.nio.cs.ArrayDecoder;
-
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-
 
 public class SmithMcGlincyUnsorted {
 
@@ -11,11 +7,8 @@ public class SmithMcGlincyUnsorted {
     private int V;
     private int[][] G;  // Graph
     private int[][] R;  //Reverse Graph
-
-    // TODO: 4/4/17 Make Generic
     private int[] cost;
     private int[] requires;
-
     private ArrayDeque<Integer> fifo = new ArrayDeque<Integer>();
     private int[] edgeSorted;
     private int maxCountSortValue;
@@ -27,14 +20,9 @@ public class SmithMcGlincyUnsorted {
         this.V = g.length;
         this.maxCountSortValue = maxCountSortValue;
         R = new int[V][V];
-
-
-        // TODO: 4/4/17 make generic
         cost = new int[V];
         requires = new int[V];
         edgeSorted = new int[V];
-
-
     }
 
     public int maxFlow() {
@@ -43,23 +31,9 @@ public class SmithMcGlincyUnsorted {
         while (!fifo.isEmpty()) {
             int current = fifo.pop();
             if (current != s) {
-//                System.out.println();
-//                System.out.println("Processing Node: " + current);
-//                System.out.print("Requires");
-//                for (int j = 0; j < requires.length; j++) {
-//                    System.out.print(requires[j] + " ");
-//                }
-//                System.out.println();
-//                System.out.print("Cost: ");
-//                for (int j = 0; j < cost.length; j++) {
-//                    System.out.print(cost[j] + " ");
-//                }
-//                System.out.println();
-
                 // Sort the edges
                 ArrayDeque<Integer> edgeQueue = new ArrayDeque<Integer>();
                 int first = -1;
-
 
                 // Go through each edge
                 // Start at end of array and go forward until zero
@@ -81,53 +55,37 @@ public class SmithMcGlincyUnsorted {
                         else
                             edgeQueue.addLast(i);
                     }
-
                 }
                 // Put S First
                 if (first > -1)
                     edgeQueue.addFirst(first);
 
-
                 while (!edgeQueue.isEmpty()) {
 
                     int edge = edgeQueue.pop();
-//                    System.out.println("Edge: " + edge);
-
 
                     if (edge != current) {
-
                         //process edge
                         int adjCost = cost[edge] - requires[edge];   //Cost of edge - require edge.  Most times requires will be 0
                         int value = Math.min(adjCost, requires[current]);
                         value = Math.min(value, R[current][edge]);
-//                        System.out.println("Current: " + current + " Edge: " + edge + " cost: " + cost[edge] + " Adj Cost: " + adjCost);
-//                        System.out.println("Current: " + current + " Edge: " + edge + " requires: " + requires[current]);
-//                        System.out.println("Current: " + current + " Edge: " + edge + " R: " + R[current][edge]);
-//                        System.out.println("Choose: " + value);
-//                        System.out.println();
 
-                        if (value > 0){
+                        if (value > 0) {
                             fifo.addLast(edge);
                             requires[current] -= value;
                             requires[edge] += value;
                             R[current][edge] -= value;
-
                         }
-
                     }
-
                 }
             }
         }
-
-
         return requires[s];
     }
 
     // Make reverse graph and calculate cost
     private void init() {
         for (int i = 0; i < V; i++) {
-            //// TODO: 4/4/17 make generic
             int total = 0;
             requires[i] = 0;
             for (int j = 0; j < V; j++) {
@@ -135,43 +93,19 @@ public class SmithMcGlincyUnsorted {
                 R[j][i] = G[i][j];
             }
             cost[i] = total;
-//            System.out.println();
         }
-//        System.out.println("Cost: ");
-//        for (int i = 0; i < V; i++) {
-//            System.out.print(cost[i] + ", ");
-//        }
-//        System.out.println("\n");
-
 
         // Scan the outgoing edges
         // Choose min(input vs output)
         for (int i = 1; i < V; i++) {     // Skip first row
-            // TODO: 4/4/17 make "total" generics
             int total = 0;
             for (int j = 0; j < V; j++) {
-//                System.out.print(R[i][j] + " ");
                 total += R[i][j];
             }
             cost[i] = Math.min(total, cost[i]);
             if (i == t) {
                 requires[t] = total;
-//                System.out.println();
-//                System.out.println("T Required: " + requires[t]);
             }
-//            System.out.println();
         }
-//        System.out.println();
-//        System.out.println();
-//        System.out.println();
-//
-//        System.out.println("Cost 2: ");
-//        for (int i = 0; i < V; i++) {
-//            System.out.print(cost[i] + ", ");
-//        }
-
     }
-
-
-
 }
